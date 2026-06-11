@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Study Planner Pro</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+/>
+
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+
+<div id="loginPage" class="auth-container">
+
+    <div class="auth-card">
+
+        <h1>📚 Study Planner</h1>
+
+        <p>Plan your sessions and never miss a study goal.</p>
+
+        <input
+            type="email"
+            id="loginEmail"
+            placeholder="Email">
+
+        <input
+            type="password"
+            id="loginPassword"
+            placeholder="Password">
+
+        <button onclick="login()">
+            Login
+        </button>
+
+        <p>
+            Don't have an account?
+            <span onclick="showSignup()">
+                Sign Up
+            </span>
+        </p>
+
+    </div>
+
+</div>
+
+<!-- SIGNUP SCREEN -->
+
+<div id="signupPage" class="auth-container hidden">
+
+    <div class="auth-card">
+
+        <h1>Create Account</h1>
+
+        <input
+            type="text"
+            id="signupName"
+            placeholder="Full Name">
+
+        <input
+            type="email"
+            id="signupEmail"
+            placeholder="Email">
+
+        <input
+            type="password"
+            id="signupPassword"
+            placeholder="Password">
+
+        <button onclick="signup()">
+            Create Account
+        </button>
+
+        <p>
+            Already have an account?
+            <span onclick="showLogin()">
+                Login
+            </span>
+        </p>
+
+    </div>
+
+</div>
+
+<!-- MAIN APP -->
+
+<div id="app" class="hidden">
+
+    <!-- HEADER -->
+
+    <header>
+
+        <div class="logo">
+
+            <i class="fas fa-graduation-cap"></i>
+
+            <div>
+
+                <h1>Study Planner</h1>
+
+                <p>
+                    Plan sessions • Get reminded • Build a streak
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="header-actions">
+
+            <button onclick="enableNotifications()">
+
+                <i class="fa-regular fa-bell"></i>
+
+                Enable Reminders
+
+            </button>
+
+            <button
+                class="primary-btn"
+                onclick="openModal()">
+
+                <i class="fas fa-plus"></i>
+
+                New Study Plan
+
+            </button>
+
+            <button onclick="logout()">
+
+                Logout
+
+            </button>
+
+        </div>
+
+    </header>
+
+    <!-- STATS -->
+
+    <section class="stats-grid">
+
+        <div class="stat-card">
+
+            <h4>TOTAL PLANS</h4>
+
+            <h2 id="totalPlans">0</h2>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h4>COMPLETED</h4>
+
+            <h2 id="completedPlans">0</h2>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h4>PENDING</h4>
+
+            <h2 id="pendingPlans">0</h2>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h4>COMPLETION</h4>
+
+            <h2 id="completionRate">0%</h2>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h4>CURRENT STREAK</h4>
+
+            <h2 id="currentStreak">0</h2>
+
+            <small>
+                Best <span id="bestStreak">0</span> days
+            </small>
+
+        </div>
+
+    </section>
+
+    <!-- CONTENT -->
+
+    <section class="main-grid">
+
+        <!-- LEFT -->
+
+        <div class="plans-section">
+
+            <div class="tabs">
+
+                <button
+                    class="tab-btn active"
+                    onclick="showUpcoming()">
+
+                    Upcoming
+
+                    <span id="upcomingCount">
+                        0
+                    </span>
+
+                </button>
+
+                <button
+                    class="tab-btn"
+                    onclick="showCompleted()">
+
+                    Completed
+
+                    <span id="completedCount">
+                        0
+                    </span>
+
+                </button>
+
+            </div>
+
+            <div id="plansContainer">
+
+                <div class="empty-state">
+
+                    <i class="fas fa-sparkles"></i>
+
+                    <h2>
+                        No upcoming plans
+                    </h2>
+
+                    <p>
+                        Add your first study plan and get reminders before it's time.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT -->
+
+        <div class="streak-panel">
+
+            <h3>STUDY STREAK</h3>
+
+            <div class="streak-cards">
+
+                <div class="streak-card">
+
+                    <h4>CURRENT</h4>
+
+                    <h1 id="streakCurrent">
+                        0
+                    </h1>
+
+                    <p>days in a row</p>
+
+                </div>
+
+                <div class="streak-card">
+
+                    <h4>BEST</h4>
+
+                    <h1 id="streakBest">
+                        0
+                    </h1>
+
+                    <p>all-time record</p>
+
+                </div>
+
+            </div>
+
+            <p class="streak-info">
+
+                Complete at least one study plan each day to keep your streak alive.
+
+            </p>
+
+        </div>
+
+    </section>
+
+</div>
+
+<!-- ADD PLAN MODAL -->
+
+<div id="planModal" class="modal">
+
+    <div class="modal-content">
+
+        <span
+            class="close-btn"
+            onclick="closeModal()">
+
+                &times;
+
+        </span>
+
+        <h2>New Study Plan</h2>
+
+        <input
+            type="text"
+            id="subject"
+            placeholder="Subject">
+
+        <input
+            type="text"
+            id="topic"
+            placeholder="Topic">
+
+        <input
+            type="date"
+            id="date">
+
+        <input
+            type="time"
+            id="time">
+
+        <select id="priority">
+
+            <option value="High">
+                High Priority
+            </option>
+
+            <option value="Medium">
+                Medium Priority
+            </option>
+
+            <option value="Low">
+                Low Priority
+            </option>
+
+        </select>
+
+        <button
+            class="primary-btn"
+            onclick="addPlan()">
+
+            Save Plan
+
+        </button>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
